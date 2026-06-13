@@ -12,9 +12,10 @@ export function ConsoleApp() {
   const { blocks, timeline, snapshots, handleMessage, markToolAcked, addUserMessage, isStreaming, resetState } = useAgentState();
   const [userInput, setUserInput] = useState('');
   const [displaySeq, setDisplaySeq] = useState(0);
+  const [suiteRunTrigger, setSuiteRunTrigger] = useState(0);
   const targetSeqRef = useRef(0);
 
-  const { status, sendMessage, markRendered, currentSeq, reconnectAttempt, backoffMs, forceReconnect, disconnect, resetSession, metrics } = useWebSocket({
+  const { status, sendMessage, markRendered, currentSeq, reconnectAttempt, backoffMs, forceReconnect, disconnect, resetSession, triggerNetworkDrop, metrics } = useWebSocket({
     url: 'ws://localhost:4747/ws',
     onMessage: (msg) => {
       handleMessage(msg);
@@ -105,7 +106,7 @@ export function ConsoleApp() {
           </div>
 
           <div className="flex items-center gap-2">
-            <button className="nb-btn nb-btn-primary text-[0.65rem]" onClick={() => handleSend('hello')}>
+            <button className="nb-btn nb-btn-primary text-[0.65rem]" onClick={() => setSuiteRunTrigger(prev => prev + 1)}>
               RUN AUTO SUITE
             </button>
             <button
@@ -233,11 +234,12 @@ export function ConsoleApp() {
       <AutoTestRunner
         status={status}
         onSend={handleSend}
-        onDisconnect={disconnect}
+        onDisconnect={triggerNetworkDrop}
         onReconnect={forceReconnect}
         onReset={handleResetSession}
         currentSeq={currentSeq}
         isStreaming={isStreaming}
+        runTrigger={suiteRunTrigger}
       />
     </div>
   );

@@ -55,8 +55,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\next-env.d.ts": {
-    "mtime": 1781368964.7074292,
-    "ast_hash": "db41d4c73bd32503d3e77d2bb8e7b1fb",
+    "mtime": 1781370761.6970859,
+    "ast_hash": "d0f8375ae1199dc7acd3977fc33b78b8",
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\next.config.ts": {
@@ -95,8 +95,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\components\\ConsoleApp.tsx": {
-    "mtime": 1781368964.6937356,
-    "ast_hash": "f50dcb4538ef5271d5f6f8b1f82c34af",
+    "mtime": 1781371470.5432725,
+    "ast_hash": "79f39de084ca35d55f4eaac4730ab637",
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\components\\ContextInspector.tsx": {
@@ -110,13 +110,13 @@
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\hooks\\useAgentState.ts": {
-    "mtime": 1781369271.3172266,
-    "ast_hash": "8febd7cb0504459e8f302684164f99ab",
+    "mtime": 1781370288.8924863,
+    "ast_hash": "4ebea57a16e60c11dcaab1efd4429688",
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\hooks\\useWebSocket.ts": {
-    "mtime": 1781368964.7057557,
-    "ast_hash": "806b4750fb624803f37117f870ad90e7",
+    "mtime": 1781371130.9764507,
+    "ast_hash": "90b149754f66531b55ebb79113f74e1d",
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\types\\protocol.ts": {
@@ -180,8 +180,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\components\\AutoTestRunner.tsx": {
-    "mtime": 1781368964.6908746,
-    "ast_hash": "18c19c9bfe475da0682d35c50d964ab4",
+    "mtime": 1781371477.6315727,
+    "ast_hash": "23e771ad5d82bf251fbfa47fa5dd1597",
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\DECISIONS.md": {

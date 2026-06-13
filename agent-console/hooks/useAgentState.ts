@@ -93,7 +93,7 @@ export function useAgentState() {
           updated[updated.length - 1] = { ...last, content: last.content + msg.text, streamId: 'stream_id' in msg ? msg.stream_id : undefined };
           return updated;
         } else {
-          return [...prev, { type: 'text', id: `txt-${msg.seq}`, content: msg.text, isStreaming: true, streamId: 'stream_id' in msg ? msg.stream_id : undefined }];
+          return [...prev, { type: 'text', id: `txt-${msg.seq}-${now}`, content: msg.text, isStreaming: true, streamId: 'stream_id' in msg ? msg.stream_id : undefined }];
         }
       } else if (msg.type === 'TOOL_CALL') {
         const updated = prev.map((b, i) => (i === prev.length - 1 && b.type === 'text') ? { ...b, isStreaming: false } : b);

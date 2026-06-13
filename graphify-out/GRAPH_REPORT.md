@@ -1,7 +1,7 @@
 # Graph Report - Conduit  (2026-06-13)
 
 ## Corpus Check
-- 40 files · ~17,893 words
+- 40 files · ~17,582 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `169b6ab5`
+- Built from commit: `da45818f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -99,8 +99,8 @@ Cohesion: 0.60
 Nodes (12): assert(), connect(), main(), sleep(), testLargeContext(), testMultiToolFlow(), testNormalFlow(), testPingPong() (+4 more)
 
 ### Community 6 - "Community 6"
-Cohesion: 0.18
-Nodes (10): ErrorMessage, PingMessage, PongPayload, ResumePayload, StreamEndMessage, TokenMessage, ToolAckPayload, ToolCallMessage (+2 more)
+Cohesion: 0.13
+Nodes (15): UseWebSocketOptions, WebSocketState, WsMetrics, ClientMessage, ErrorMessage, PingMessage, PongPayload, ResumePayload (+7 more)
 
 ### Community 7 - "Community 7"
 Cohesion: 0.05
@@ -151,8 +151,8 @@ Cohesion: 0.15
 Nodes (10): SafeAny, diff, DiffResult, end, KeyPath, new_json, new_large, old_json (+2 more)
 
 ### Community 29 - "Community 29"
-Cohesion: 0.18
-Nodes (9): useWebSocket(), UseWebSocketOptions, WebSocketState, WsMetrics, MockWebSocket, onMessageMock, { result }, ClientMessage (+1 more)
+Cohesion: 0.33
+Nodes (4): useWebSocket(), MockWebSocket, onMessageMock, { result }
 
 ## Knowledge Gaps
 - **163 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+158 more)

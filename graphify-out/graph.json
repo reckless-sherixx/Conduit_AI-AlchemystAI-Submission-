@@ -622,7 +622,7 @@
       "label": "TestStep",
       "file_type": "code",
       "source_file": "agent-console/components/AutoTestRunner.tsx",
-      "source_location": "L15",
+      "source_location": "L16",
       "id": "components_autotestrunner_teststep",
       "community": 25,
       "norm_label": "teststep"
@@ -631,7 +631,7 @@
       "label": "AutoTestRunner()",
       "file_type": "code",
       "source_file": "agent-console/components/AutoTestRunner.tsx",
-      "source_location": "L22",
+      "source_location": "L23",
       "id": "components_autotestrunner_autotestrunner",
       "community": 25,
       "norm_label": "autotestrunner()"
@@ -1038,7 +1038,7 @@
       "source_file": "agent-console/hooks/useWebSocket.ts",
       "source_location": "L1",
       "id": "agent_console_hooks_usewebsocket_ts",
-      "community": 29,
+      "community": 6,
       "norm_label": "usewebsocket.ts"
     },
     {
@@ -1047,7 +1047,7 @@
       "source_file": "agent-console/hooks/useWebSocket.ts",
       "source_location": "L4",
       "id": "hooks_usewebsocket_usewebsocketoptions",
-      "community": 29,
+      "community": 6,
       "norm_label": "usewebsocketoptions"
     },
     {
@@ -1056,7 +1056,7 @@
       "source_file": "agent-console/hooks/useWebSocket.ts",
       "source_location": "L9",
       "id": "hooks_usewebsocket_wsmetrics",
-      "community": 29,
+      "community": 6,
       "norm_label": "wsmetrics"
     },
     {
@@ -1065,14 +1065,14 @@
       "source_file": "agent-console/hooks/useWebSocket.ts",
       "source_location": "L18",
       "id": "hooks_usewebsocket_websocketstate",
-      "community": 29,
+      "community": 6,
       "norm_label": "websocketstate"
     },
     {
       "label": "useWebSocket()",
       "file_type": "code",
       "source_file": "agent-console/hooks/useWebSocket.ts",
-      "source_location": "L32",
+      "source_location": "L33",
       "id": "hooks_usewebsocket_usewebsocket",
       "community": 29,
       "norm_label": "usewebsocket()"
@@ -1362,7 +1362,7 @@
       "source_file": "agent-console/types/protocol.ts",
       "source_location": "L51",
       "id": "types_protocol_servermessage",
-      "community": 29,
+      "community": 6,
       "norm_label": "servermessage"
     },
     {
@@ -1407,7 +1407,7 @@
       "source_file": "agent-console/types/protocol.ts",
       "source_location": "L80",
       "id": "types_protocol_clientmessage",
-      "community": 29,
+      "community": 6,
       "norm_label": "clientmessage"
     },
     {
@@ -3518,9 +3518,9 @@
       "source_file": "agent-console/package.json",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_package_scripts",
-      "target": "agent_console_package_scripts_test",
-      "confidence_score": 1.0
+      "target": "agent_console_package_scripts_test"
     },
     {
       "relation": "contains",
@@ -3568,9 +3568,9 @@
       "source_file": "agent-console/package.json",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_package_devdependencies",
-      "target": "agent_console_package_devdependencies_testing_library_jest_dom",
-      "confidence_score": 1.0
+      "target": "agent_console_package_devdependencies_testing_library_jest_dom"
     },
     {
       "relation": "contains",
@@ -3578,9 +3578,9 @@
       "source_file": "agent-console/package.json",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_package_devdependencies",
-      "target": "agent_console_package_devdependencies_testing_library_react",
-      "confidence_score": 1.0
+      "target": "agent_console_package_devdependencies_testing_library_react"
     },
     {
       "relation": "contains",
@@ -3638,9 +3638,9 @@
       "source_file": "agent-console/package.json",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_package_devdependencies",
-      "target": "agent_console_package_devdependencies_happy_dom",
-      "confidence_score": 1.0
+      "target": "agent_console_package_devdependencies_happy_dom"
     },
     {
       "relation": "contains",
@@ -3668,9 +3668,9 @@
       "source_file": "agent-console/package.json",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_package_devdependencies",
-      "target": "agent_console_package_devdependencies_vitest",
-      "confidence_score": 1.0
+      "target": "agent_console_package_devdependencies_vitest"
     },
     {
       "relation": "contains",
@@ -4516,9 +4516,9 @@
       "source_file": "agent-console/core/escape_hatch.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_core_escape_hatch_ts",
-      "target": "core_escape_hatch_safeany",
-      "confidence_score": 1.0
+      "target": "core_escape_hatch_safeany"
     },
     {
       "relation": "imports_from",
@@ -4527,9 +4527,9 @@
       "source_file": "agent-console/tests/diff_engine.test.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_diff_engine_test_ts",
-      "target": "agent_console_core_escape_hatch_ts",
-      "confidence_score": 1.0
+      "target": "agent_console_core_escape_hatch_ts"
     },
     {
       "relation": "imports",
@@ -4538,9 +4538,9 @@
       "source_file": "agent-console/tests/diff_engine.test.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_diff_engine_test_ts",
-      "target": "core_escape_hatch_safeany",
-      "confidence_score": 1.0
+      "target": "core_escape_hatch_safeany"
     },
     {
       "relation": "contains",
@@ -4548,9 +4548,9 @@
       "source_file": "agent-console/core/event_types.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_core_event_types_ts",
-      "target": "core_event_types_agentevent",
-      "confidence_score": 1.0
+      "target": "core_event_types_agentevent"
     },
     {
       "relation": "contains",
@@ -4558,9 +4558,9 @@
       "source_file": "agent-console/core/event_types.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_core_event_types_ts",
-      "target": "core_event_types_streamstate",
-      "confidence_score": 1.0
+      "target": "core_event_types_streamstate"
     },
     {
       "relation": "contains",
@@ -4568,9 +4568,9 @@
       "source_file": "agent-console/core/event_types.ts",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_core_event_types_ts",
-      "target": "core_event_types_protocolenginestate",
-      "confidence_score": 1.0
+      "target": "core_event_types_protocolenginestate"
     },
     {
       "relation": "contains",
@@ -4578,9 +4578,9 @@
       "source_file": "agent-console/core/event_types.ts",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_core_event_types_ts",
-      "target": "core_event_types_distributiveomit",
-      "confidence_score": 1.0
+      "target": "core_event_types_distributiveomit"
     },
     {
       "relation": "contains",
@@ -4588,9 +4588,9 @@
       "source_file": "agent-console/core/event_types.ts",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_core_event_types_ts",
-      "target": "core_event_types_agenteventinput",
-      "confidence_score": 1.0
+      "target": "core_event_types_agenteventinput"
     },
     {
       "relation": "imports_from",
@@ -4599,9 +4599,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_core_protocol_engine_ts",
-      "target": "agent_console_core_event_types_ts",
-      "confidence_score": 1.0
+      "target": "agent_console_core_event_types_ts"
     },
     {
       "relation": "imports_from",
@@ -4610,9 +4610,9 @@
       "source_file": "agent-console/tests/buffer.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_buffer_test_ts",
-      "target": "agent_console_core_event_types_ts",
-      "confidence_score": 1.0
+      "target": "agent_console_core_event_types_ts"
     },
     {
       "relation": "imports",
@@ -4621,9 +4621,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_core_protocol_engine_ts",
-      "target": "core_event_types_agentevent",
-      "confidence_score": 1.0
+      "target": "core_event_types_agentevent"
     },
     {
       "relation": "imports",
@@ -4632,9 +4632,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_core_protocol_engine_ts",
-      "target": "core_event_types_protocolenginestate",
-      "confidence_score": 1.0
+      "target": "core_event_types_protocolenginestate"
     },
     {
       "relation": "imports",
@@ -4643,9 +4643,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_core_protocol_engine_ts",
-      "target": "core_event_types_agenteventinput",
-      "confidence_score": 1.0
+      "target": "core_event_types_agenteventinput"
     },
     {
       "relation": "imports",
@@ -4654,9 +4654,9 @@
       "source_file": "agent-console/tests/buffer.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_buffer_test_ts",
-      "target": "core_event_types_agenteventinput",
-      "confidence_score": 1.0
+      "target": "core_event_types_agenteventinput"
     },
     {
       "relation": "contains",
@@ -4664,9 +4664,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_core_protocol_engine_ts",
-      "target": "core_protocol_engine_protocolengine",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine"
     },
     {
       "relation": "imports_from",
@@ -4675,9 +4675,9 @@
       "source_file": "agent-console/tests/buffer.test.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_buffer_test_ts",
-      "target": "agent_console_core_protocol_engine_ts",
-      "confidence_score": 1.0
+      "target": "agent_console_core_protocol_engine_ts"
     },
     {
       "relation": "method",
@@ -4685,9 +4685,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "core_protocol_engine_protocolengine",
-      "target": "core_protocol_engine_protocolengine_constructor",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine_constructor"
     },
     {
       "relation": "method",
@@ -4695,9 +4695,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "core_protocol_engine_protocolengine",
-      "target": "core_protocol_engine_protocolengine_get_state",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine_get_state"
     },
     {
       "relation": "method",
@@ -4705,9 +4705,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "core_protocol_engine_protocolengine",
-      "target": "core_protocol_engine_protocolengine_subscribe",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine_subscribe"
     },
     {
       "relation": "method",
@@ -4715,9 +4715,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "core_protocol_engine_protocolengine",
-      "target": "core_protocol_engine_protocolengine_on_commit",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine_on_commit"
     },
     {
       "relation": "method",
@@ -4725,9 +4725,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "core_protocol_engine_protocolengine",
-      "target": "core_protocol_engine_protocolengine_notify",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine_notify"
     },
     {
       "relation": "method",
@@ -4735,9 +4735,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "core_protocol_engine_protocolengine",
-      "target": "core_protocol_engine_protocolengine_ingest",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine_ingest"
     },
     {
       "relation": "method",
@@ -4745,9 +4745,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L73",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "core_protocol_engine_protocolengine",
-      "target": "core_protocol_engine_protocolengine_commit",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine_commit"
     },
     {
       "relation": "method",
@@ -4755,9 +4755,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L119",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "core_protocol_engine_protocolengine",
-      "target": "core_protocol_engine_protocolengine_ack_tool_call",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine_ack_tool_call"
     },
     {
       "relation": "method",
@@ -4765,9 +4765,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L127",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "core_protocol_engine_protocolengine",
-      "target": "core_protocol_engine_protocolengine_set_rendered_seq",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine_set_rendered_seq"
     },
     {
       "relation": "method",
@@ -4775,9 +4775,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L134",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "core_protocol_engine_protocolengine",
-      "target": "core_protocol_engine_protocolengine_reset_session",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine_reset_session"
     },
     {
       "relation": "imports",
@@ -4786,9 +4786,9 @@
       "source_file": "agent-console/tests/buffer.test.ts",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_buffer_test_ts",
-      "target": "core_protocol_engine_protocolengine",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine"
     },
     {
       "relation": "calls",
@@ -4797,9 +4797,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L46",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "core_protocol_engine_protocolengine_ingest",
-      "target": "core_protocol_engine_protocolengine_notify",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine_notify"
     },
     {
       "relation": "calls",
@@ -4808,9 +4808,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L123",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "core_protocol_engine_protocolengine_ack_tool_call",
-      "target": "core_protocol_engine_protocolengine_notify",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine_notify"
     },
     {
       "relation": "calls",
@@ -4819,9 +4819,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L130",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "core_protocol_engine_protocolengine_set_rendered_seq",
-      "target": "core_protocol_engine_protocolengine_notify",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine_notify"
     },
     {
       "relation": "calls",
@@ -4830,9 +4830,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L145",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "core_protocol_engine_protocolengine_reset_session",
-      "target": "core_protocol_engine_protocolengine_notify",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine_notify"
     },
     {
       "relation": "calls",
@@ -4841,9 +4841,9 @@
       "source_file": "agent-console/core/protocol_engine.ts",
       "source_location": "L62",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "core_protocol_engine_protocolengine_ingest",
-      "target": "core_protocol_engine_protocolengine_commit",
-      "confidence_score": 1.0
+      "target": "core_protocol_engine_protocolengine_commit"
     },
     {
       "relation": "imports_from",
@@ -5008,9 +5008,9 @@
       "source_file": "agent-console/tests/reconnect.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_reconnect_test_ts",
-      "target": "agent_console_hooks_usewebsocket_ts",
-      "confidence_score": 1.0
+      "target": "agent_console_hooks_usewebsocket_ts"
     },
     {
       "relation": "imports",
@@ -5019,9 +5019,9 @@
       "source_file": "agent-console/tests/reconnect.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_reconnect_test_ts",
-      "target": "hooks_usewebsocket_usewebsocket",
-      "confidence_score": 1.0
+      "target": "hooks_usewebsocket_usewebsocket"
     },
     {
       "relation": "contains",
@@ -5029,9 +5029,9 @@
       "source_file": "agent-console/tests/buffer.test.ts",
       "source_location": "L95",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_buffer_test_ts",
-      "target": "tests_buffer_test_engine",
-      "confidence_score": 1.0
+      "target": "tests_buffer_test_engine"
     },
     {
       "relation": "contains",
@@ -5039,9 +5039,9 @@
       "source_file": "agent-console/tests/buffer.test.ts",
       "source_location": "L69",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_buffer_test_ts",
-      "target": "tests_buffer_test_event_3",
-      "confidence_score": 1.0
+      "target": "tests_buffer_test_event_3"
     },
     {
       "relation": "contains",
@@ -5049,9 +5049,9 @@
       "source_file": "agent-console/tests/buffer.test.ts",
       "source_location": "L75",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_buffer_test_ts",
-      "target": "tests_buffer_test_event_2",
-      "confidence_score": 1.0
+      "target": "tests_buffer_test_event_2"
     },
     {
       "relation": "contains",
@@ -5059,9 +5059,9 @@
       "source_file": "agent-console/tests/buffer.test.ts",
       "source_location": "L63",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_buffer_test_ts",
-      "target": "tests_buffer_test_event_1",
-      "confidence_score": 1.0
+      "target": "tests_buffer_test_event_1"
     },
     {
       "relation": "contains",
@@ -5069,9 +5069,9 @@
       "source_file": "agent-console/tests/buffer.test.ts",
       "source_location": "L97",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_buffer_test_ts",
-      "target": "tests_buffer_test_events",
-      "confidence_score": 1.0
+      "target": "tests_buffer_test_events"
     },
     {
       "relation": "contains",
@@ -5079,9 +5079,9 @@
       "source_file": "agent-console/tests/diff_engine.test.ts",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_diff_engine_test_ts",
-      "target": "tests_diff_engine_test_keypath",
-      "confidence_score": 1.0
+      "target": "tests_diff_engine_test_keypath"
     },
     {
       "relation": "contains",
@@ -5089,9 +5089,9 @@
       "source_file": "agent-console/tests/diff_engine.test.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_diff_engine_test_ts",
-      "target": "tests_diff_engine_test_diffresult",
-      "confidence_score": 1.0
+      "target": "tests_diff_engine_test_diffresult"
     },
     {
       "relation": "contains",
@@ -5099,9 +5099,9 @@
       "source_file": "agent-console/tests/diff_engine.test.ts",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_diff_engine_test_ts",
-      "target": "tests_diff_engine_test_compute_diff",
-      "confidence_score": 1.0
+      "target": "tests_diff_engine_test_compute_diff"
     },
     {
       "relation": "contains",
@@ -5109,9 +5109,9 @@
       "source_file": "agent-console/tests/diff_engine.test.ts",
       "source_location": "L85",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_diff_engine_test_ts",
-      "target": "tests_diff_engine_test_old_json",
-      "confidence_score": 1.0
+      "target": "tests_diff_engine_test_old_json"
     },
     {
       "relation": "contains",
@@ -5119,9 +5119,9 @@
       "source_file": "agent-console/tests/diff_engine.test.ts",
       "source_location": "L95",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_diff_engine_test_ts",
-      "target": "tests_diff_engine_test_new_json",
-      "confidence_score": 1.0
+      "target": "tests_diff_engine_test_new_json"
     },
     {
       "relation": "contains",
@@ -5129,9 +5129,9 @@
       "source_file": "agent-console/tests/diff_engine.test.ts",
       "source_location": "L152",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_diff_engine_test_ts",
-      "target": "tests_diff_engine_test_diff",
-      "confidence_score": 1.0
+      "target": "tests_diff_engine_test_diff"
     },
     {
       "relation": "contains",
@@ -5139,9 +5139,9 @@
       "source_file": "agent-console/tests/diff_engine.test.ts",
       "source_location": "L122",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_diff_engine_test_ts",
-      "target": "tests_diff_engine_test_generate_large_json",
-      "confidence_score": 1.0
+      "target": "tests_diff_engine_test_generate_large_json"
     },
     {
       "relation": "contains",
@@ -5149,9 +5149,9 @@
       "source_file": "agent-console/tests/diff_engine.test.ts",
       "source_location": "L141",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_diff_engine_test_ts",
-      "target": "tests_diff_engine_test_old_large",
-      "confidence_score": 1.0
+      "target": "tests_diff_engine_test_old_large"
     },
     {
       "relation": "contains",
@@ -5159,9 +5159,9 @@
       "source_file": "agent-console/tests/diff_engine.test.ts",
       "source_location": "L142",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_diff_engine_test_ts",
-      "target": "tests_diff_engine_test_new_large",
-      "confidence_score": 1.0
+      "target": "tests_diff_engine_test_new_large"
     },
     {
       "relation": "contains",
@@ -5169,9 +5169,9 @@
       "source_file": "agent-console/tests/diff_engine.test.ts",
       "source_location": "L151",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_diff_engine_test_ts",
-      "target": "tests_diff_engine_test_start",
-      "confidence_score": 1.0
+      "target": "tests_diff_engine_test_start"
     },
     {
       "relation": "contains",
@@ -5179,9 +5179,9 @@
       "source_file": "agent-console/tests/diff_engine.test.ts",
       "source_location": "L153",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_diff_engine_test_ts",
-      "target": "tests_diff_engine_test_end",
-      "confidence_score": 1.0
+      "target": "tests_diff_engine_test_end"
     },
     {
       "relation": "contains",
@@ -5189,9 +5189,9 @@
       "source_file": "agent-console/tests/reconnect.test.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_reconnect_test_ts",
-      "target": "tests_reconnect_test_mockwebsocket",
-      "confidence_score": 1.0
+      "target": "tests_reconnect_test_mockwebsocket"
     },
     {
       "relation": "contains",
@@ -5199,9 +5199,9 @@
       "source_file": "agent-console/tests/reconnect.test.ts",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_reconnect_test_ts",
-      "target": "tests_reconnect_test_onmessagemock",
-      "confidence_score": 1.0
+      "target": "tests_reconnect_test_onmessagemock"
     },
     {
       "relation": "contains",
@@ -5209,9 +5209,9 @@
       "source_file": "agent-console/tests/reconnect.test.ts",
       "source_location": "L47",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agent_console_tests_reconnect_test_ts",
-      "target": "tests_reconnect_test_result",
-      "confidence_score": 1.0
+      "target": "tests_reconnect_test_result"
     },
     {
       "relation": "method",
@@ -5219,9 +5219,9 @@
       "source_file": "agent-console/tests/reconnect.test.ts",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_reconnect_test_mockwebsocket",
-      "target": "tests_reconnect_test_mockwebsocket_constructor",
-      "confidence_score": 1.0
+      "target": "tests_reconnect_test_mockwebsocket_constructor"
     },
     {
       "relation": "contains",
@@ -8869,5 +8869,5 @@
       "source_file": "README.md"
     }
   ],
-  "built_at_commit": "169b6ab5f54b36b92a366772c4194690b883e310"
+  "built_at_commit": "da45818fa9e523ec9a8e4925b88ae598df6a7a11"
 }

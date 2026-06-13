@@ -10,6 +10,7 @@ interface AutoTestRunnerProps {
   onReset: () => void;
   currentSeq: number;
   isStreaming: boolean;
+  runTrigger?: number;
 }
 
 interface TestStep {
@@ -19,7 +20,7 @@ interface TestStep {
   waitCondition: (seq: number, isStreaming: boolean) => boolean;
 }
 
-export function AutoTestRunner({ status, onSend, onDisconnect, onReconnect, onReset, currentSeq, isStreaming }: AutoTestRunnerProps) {
+export function AutoTestRunner({ status, onSend, onDisconnect, onReconnect, onReset, currentSeq, isStreaming, runTrigger }: AutoTestRunnerProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
   const [activeStepIdx, setActiveStepIdx] = useState(-1);
@@ -56,7 +57,16 @@ export function AutoTestRunner({ status, onSend, onDisconnect, onReconnect, onRe
       waitCondition: (seq: number, streaming: boolean) => !streaming && seq >= 22,
     },
     {
-      label: '4. Large Context DB Schema',
+      label: '4. Multi-Tool Analysis',
+      action: () => {
+        onSend('analyze');
+        addLog('Sent "analyze" trigger for multi-tool correlation.');
+      },
+      status: 'idle',
+      waitCondition: (seq: number, streaming: boolean) => !streaming && seq >= 30,
+    },
+    {
+      label: '5. Large Context DB Schema',
       action: () => {
         onSend('schema');
         addLog('Sent "schema" trigger for large context load.');
@@ -65,7 +75,7 @@ export function AutoTestRunner({ status, onSend, onDisconnect, onReconnect, onRe
       waitCondition: (seq: number, streaming: boolean) => !streaming && seq >= 25,
     },
     {
-      label: '5. Connection Drop Simulation',
+      label: '6. Connection Drop Simulation',
       action: () => {
         onDisconnect();
         addLog('Simulated network drop. Waiting for reconnect...');
@@ -106,6 +116,12 @@ export function AutoTestRunner({ status, onSend, onDisconnect, onReconnect, onRe
     setActiveStepIdx(-1);
     addLog('Test suite aborted by user.');
   };
+
+  useEffect(() => {
+    if (runTrigger && runTrigger > 0) {
+      startSuite();
+    }
+  }, [runTrigger]);
 
   
   useEffect(() => {

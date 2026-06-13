@@ -26,6 +26,7 @@ export interface WebSocketState {
   forceReconnect: () => void;
   disconnect: () => void;
   resetSession: () => void;
+  triggerNetworkDrop: () => void;
   metrics: WsMetrics;
 }
 
@@ -159,6 +160,12 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
     setTimeout(() => connectRef.current?.(), 100);
   }, []);
 
+  const triggerNetworkDrop = useCallback(() => {
+    if (wsRef.current) {
+      wsRef.current.close();
+    }
+  }, []);
+
   useEffect(() => {
     cleanedUpRef.current = false;
     manualDisconnectRef.current = false;
@@ -236,12 +243,23 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
         }
       };
 
-      ws.onclose = () => {
+      ws.onclose = (event) => {
+        if (ws !== wsRef.current) return;
         wsRef.current = null;
         if (cleanedUpRef.current || manualDisconnectRef.current) return;
 
+        if (event?.reason === 'replaced') {
+          setStatus('disconnected');
+          console.warn("[WebSocket] Connection closed because it was replaced by a new session.");
+          return;
+        }
+
         setStatus('disconnected');
         reconnectCountRef.current += 1;
+        setMetrics(prev => ({
+          ...prev,
+          reconnectCount: reconnectCountRef.current,
+        }));
         const attempt = reconnectAttemptRef.current;
         const bo = Math.min(500 * Math.pow(2, attempt), 10000);
         reconnectAttemptRef.current += 1;
@@ -274,5 +292,5 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
     };
   }, [url, processBuffer]);
 
-  return { status, sendMessage, markRendered, currentSeq, reconnectAttempt, backoffMs, lastPingAt, forceReconnect, disconnect, resetSession, metrics };
+  return { status, sendMessage, markRendered, currentSeq, reconnectAttempt, backoffMs, lastPingAt, forceReconnect, disconnect, resetSession, triggerNetworkDrop, metrics };
 }
