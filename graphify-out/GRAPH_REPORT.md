@@ -1,16 +1,16 @@
 # Graph Report - Conduit  (2026-06-13)
 
 ## Corpus Check
-- 40 files · ~17,626 words
+- 40 files · ~17,974 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 373 nodes · 530 edges · 31 communities (23 shown, 8 thin omitted)
+- 385 nodes · 546 edges · 37 communities (29 shown, 8 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.93)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `e8a81d5f`
+- Built from commit: `4fb4c13e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -43,18 +43,24 @@
 - [[_COMMUNITY_Community 27|Community 27]]
 - [[_COMMUNITY_Community 28|Community 28]]
 - [[_COMMUNITY_Community 29|Community 29]]
+- [[_COMMUNITY_Community 31|Community 31]]
+- [[_COMMUNITY_Community 32|Community 32]]
+- [[_COMMUNITY_Community 33|Community 33]]
+- [[_COMMUNITY_Community 34|Community 34]]
+- [[_COMMUNITY_Community 35|Community 35]]
+- [[_COMMUNITY_Community 36|Community 36]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `AgentServer` - 25 edges
 2. `compilerOptions` - 16 edges
-3. `Full Stack AI Engineer Assignment` - 15 edges
-4. `compilerOptions` - 14 edges
-5. `ProtocolEngine` - 12 edges
-6. `ChaosEngine` - 11 edges
-7. `sleep()` - 10 edges
-8. `main()` - 10 edges
-9. `assert()` - 9 edges
-10. `connect()` - 9 edges
+3. `Conduit — Agent Observability Console` - 15 edges
+4. `Full Stack AI Engineer Assignment` - 15 edges
+5. `compilerOptions` - 14 edges
+6. `ProtocolEngine` - 12 edges
+7. `ChaosEngine` - 11 edges
+8. `sleep()` - 10 edges
+9. `main()` - 10 edges
+10. `assert()` - 9 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Chaos Mode` --conceptually_related_to--> `ChaosEngine`  [INFERRED]
@@ -72,7 +78,7 @@
 - **Agent Console Core Features** — readme_streaming_chat, readme_trace_timeline, readme_context_inspector, readme_reconnection_recovery [EXTRACTED 1.00]
 - **Chaos Testing Scenarios** — readme_chaos_mode, readme_chaos_survival, src_chaos_chaosengine [INFERRED 0.85]
 
-## Communities (31 total, 8 thin omitted)
+## Communities (37 total, 8 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.12
@@ -103,8 +109,8 @@ Cohesion: 0.18
 Nodes (10): ErrorMessage, PingMessage, PongPayload, ResumePayload, StreamEndMessage, TokenMessage, ToolAckPayload, ToolCallMessage (+2 more)
 
 ### Community 7 - "Community 7"
-Cohesion: 0.05
-Nodes (42): 1. Prerequisites, 2. Start the Mock Backend Server, 3. Start the Next.js Frontend Console, A. Streamed Response with Tool Call, Appendix: Quick Protocol Interaction Example, Architectural Approach, B. Trace Timeline, C. Context Inspector (+34 more)
+Cohesion: 0.21
+Nodes (13): 1. Prerequisites, 2. Start the Backend Server, 2. Start the Mock Backend Server, 3. Start the Next.js Frontend, 3. Start the Next.js Frontend Console, Appendix: Quick Protocol Interaction Example, code:bash (cd agent-server), code:bash (docker run -p 4747:4747 agent-server --mode chaos) (+5 more)
 
 ### Community 8 - "Community 8"
 Cohesion: 0.07
@@ -154,8 +160,32 @@ Nodes (10): SafeAny, diff, DiffResult, end, KeyPath, new_json, new_large, old_js
 Cohesion: 0.18
 Nodes (9): useWebSocket(), UseWebSocketOptions, WebSocketState, WsMetrics, MockWebSocket, onMessageMock, { result }, ClientMessage (+1 more)
 
+### Community 31 - "Community 31"
+Cohesion: 0.14
+Nodes (13): Architectural Approach, code:bash (cd agent-console), Conduit — Agent Observability Console, Console Features, Controls:, Design System & Palette, Features, Live Telemetry Metrics (+5 more)
+
+### Community 32 - "Community 32"
+Cohesion: 0.20
+Nodes (10): Deliverables, Evaluation Criteria, Full Stack AI Engineer Assignment, Overview, Prerequisites, Technical Constraints, Timeline, What Will Get You Rejected (+2 more)
+
+### Community 33 - "Community 33"
+Cohesion: 0.33
+Nodes (6): Task 1  Streaming Chat with Tool Call Interruptions, Task 2  Agent Trace Timeline, Task 3  Context Inspector, Task 4  Reconnection with State Recovery, Task 5  Chaos Survival, What to Build
+
+### Community 34 - "Community 34"
+Cohesion: 0.40
+Nodes (5): Chaos Mode Behaviours, Client → Server Messages, Protocol Reference, Sequence Number Rules, Server → Client Messages
+
+### Community 35 - "Community 35"
+Cohesion: 0.50
+Nodes (4): A. Streamed Response with Tool Call, B. Trace Timeline, C. Context Inspector, Visual Walkthrough & Screenshots
+
+### Community 36 - "Community 36"
+Cohesion: 0.67
+Nodes (3): code:mermaid (stateDiagram-v2), State Machine Diagram, The Agent Server
+
 ## Knowledge Gaps
-- **163 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+158 more)
+- **169 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+164 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **8 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -163,16 +193,16 @@ Nodes (9): useWebSocket(), UseWebSocketOptions, WebSocketState, WsMetrics, MockW
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `AgentServer` connect `Community 0` to `Community 4`?**
-  _High betweenness centrality (0.020) - this node is a cross-community bridge._
-- **Why does `ChaosEngine` connect `Community 4` to `Community 0`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
+  _High betweenness centrality (0.019) - this node is a cross-community bridge._
+- **Why does `Full Stack AI Engineer Assignment` connect `Community 32` to `Community 33`, `Community 34`, `Community 36`, `Community 7`, `Community 31`?**
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+- **Why does `Conduit — Agent Observability Console` connect `Community 31` to `Community 35`, `Community 36`, `Community 7`?**
+  _High betweenness centrality (0.012) - this node is a cross-community bridge._
 - **What connects `eslintConfig`, `nextConfig`, `name` to the rest of the system?**
-  _167 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _173 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.12183908045977011 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.14619883040935672 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
   _Cohesion score 0.1323529411764706 - nodes in this community are weakly interconnected._
-- **Should `Community 3` be split into smaller, more focused modules?**
-  _Cohesion score 0.12318840579710146 - nodes in this community are weakly interconnected._

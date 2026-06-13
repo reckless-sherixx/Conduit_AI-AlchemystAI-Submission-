@@ -23,7 +23,7 @@ export function ChatPanel({ blocks }: ChatPanelProps) {
           </div>
           <h3 className="nb-title text-lg" style={{ fontFamily: 'var(--font-heading)' }}>STREAMING FEED</h3>
           <p className="text-sm text-[var(--color-muted-text)] font-semibold leading-relaxed">
-            Send a message to start the agent. Type a keyword like <strong>hello</strong>, <strong>summary</strong>, or <strong>analyze</strong> to trigger a response.
+            Send a message to start the agent. Type a keyword like <strong>hello</strong>, <strong>summary</strong>, <strong>analyze</strong>, <strong>find</strong>, <strong>large</strong>, <strong>long</strong>, or <strong>help</strong> to trigger a response.
           </p>
           <div className="flex flex-wrap gap-2 justify-center mt-2">
             {['hello', 'summary', 'analyze', 'find', 'large', 'long', 'help'].map(kw => (

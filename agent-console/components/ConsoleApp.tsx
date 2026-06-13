@@ -83,7 +83,7 @@ export function ConsoleApp() {
 
           <div className="flex items-center gap-2">
             <button className="nb-btn nb-btn-primary text-[0.65rem]" onClick={() => setSuiteRunTrigger(prev => prev + 1)}>
-              RUN AUTO SUITE
+              RUN INTEGRATION SUITE
             </button>
             <button
               className="nb-btn text-[0.65rem]"

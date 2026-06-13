@@ -1,6 +1,6 @@
 # Conduit — Agent Observability Console
 
-Conduit is a state-of-the-art AI agent observability console built with **Next.js (App Router)** and styled using a custom **Neobrutalism** palette. It connects to the Alchemyst AI Agent WebSocket server, rendering real-time streaming tokens, mid-stream tool execution cards, trace timelines, and context snapshot diffs. Under the hood, it implements an event-sourced reordering buffer and connection recovery layer to survive connection drops and message shuffling in **chaos mode**.
+Conduit is a premium agent observability console built with **Next.js (App Router)** and styled using a custom **Neobrutalism** palette. It connects to the Alchemyst AI Agent WebSocket server, rendering real-time streaming tokens, mid-stream tool execution cards, trace timelines, and context snapshot diffs. Under the hood, it implements an event-sourced reordering buffer and connection recovery layer to survive connection drops and message shuffling in chaos mode.
 
 ---
 
@@ -41,24 +41,63 @@ stateDiagram-v2
 
 ---
 
-## Features
+## Design System & Palette
 
-1. **Neobrutalism Design System**: Structured with thick black borders, hard flat shadows, monospace typography, and a custom teal (`#5eead4`) / cream (`#e8e0d4`) palette for high readability.
-2. **Layout Shift-Free Streaming**: Streaming text blocks freeze in place during active tool calls, rendering tool status cards inline and resuming from the precise boundary upon receiving results.
-3. **Trace Timeline**: An expandable side timeline displaying every event. Consecutive tokens are auto-batched into collapsible summaries to prevent render-loop fatigue.
-4. **Context State Inspector**: A JSON tree visualizer showing context snapshots, automatic property diffing (+NEW, CHG, DEL), and historical step scrubbing.
-5. **Auto Test Suite**: A sequenced automated integration test widget allowing developers to run basic messaging, tool execution, large context data, and network drops sequentially.
+Conduit's user interface is styled using a highly tactile **Neobrutalism** design language:
+* **Canvas Background**: Soft cream (`#e8e0d4`) with a radial dot grid pattern.
+* **Primary Accent**: Vibrant teal (`#5eead4`) for active states, headers, and action buttons.
+* **Containers**: Clean white (`#ffffff`) background cards outlined by thick solid black borders (`2px solid #000000`).
+* **Visual Anchors**: Offset black shadows (`4px 4px 0px 0px #000000`) that maintain sharp contrast.
+* **Typography**: Modern headings styled with the `Outfit` font family and monospace code tags/metrics powered by `JetBrains Mono`.
 
 ---
 
-## Getting Started & Run Instructions
+## Console Features
+
+1. **Layout Shift-Free Streaming**: Displays token streams dynamically. During a `TOOL_CALL`, the active text block freezes in place while rendering tool status indicators inline. Streaming resumes from the precise block boundary without layout flickering.
+2. **Trace Timeline**: An expandable left-hand sidebar containing sequence-indexed telemetry. Consecutive token events are consolidated into collapsible summaries to prevent UI lagging. Bidirectional linking highlights the corresponding segment in the chat layout.
+3. **Context State Inspector**: A nested JSON tree visualizer displaying context state snapshots with real-time property diffing (green for additions, orange for updates, red for removals) and a history scrubbing timeline.
+4. **Resilient Network Layer**: Integrates exponential backoff reconnection, automatic message buffering, and deduplication of replayed frames to survive simulated chaos mode network drops.
+
+---
+
+## Workspace Structure
+
+The project repository contains the following key components:
+* **[/agent-console](file:///c:/Users/ezboi/Documents/Cohort_3.0/Conduit/agent-console)**: Next.js App Router application.
+  * **[hooks/useWebSocket.ts](file:///c:/Users/ezboi/Documents/Cohort_3.0/Conduit/agent-console/hooks/useWebSocket.ts)**: Handles sequence management, heartbeats, drop detection, and backoff connection logic.
+  * **[hooks/useAgentState.ts](file:///c:/Users/ezboi/Documents/Cohort_3.0/Conduit/agent-console/hooks/useAgentState.ts)**: Maintains UI-facing data representations, text stream blocks, and context snapshots.
+  * **[components/AutoTestRunner.tsx](file:///c:/Users/ezboi/Documents/Cohort_3.0/Conduit/agent-console/components/AutoTestRunner.tsx)**: Embedded test suite manager.
+  * **[components/ChatPanel.tsx](file:///c:/Users/ezboi/Documents/Cohort_3.0/Conduit/agent-console/components/ChatPanel.tsx)**: Streaming feed window.
+  * **[components/TraceTimeline.tsx](file:///c:/Users/ezboi/Documents/Cohort_3.0/Conduit/agent-console/components/TraceTimeline.tsx)**: Left-side timeline observer.
+  * **[components/ContextInspector.tsx](file:///c:/Users/ezboi/Documents/Cohort_3.0/Conduit/agent-console/components/ContextInspector.tsx)**: Interactive state diff visualizer.
+* **[/agent-server](file:///c:/Users/ezboi/Documents/Cohort_3.0/Conduit/agent-server)**: Node.js server simulating structured WebSocket and HTTP telemetry under normal and chaotic conditions.
+* **[DECISIONS.md](file:///c:/Users/ezboi/Documents/Cohort_3.0/Conduit/DECISIONS.md)**: Architectural specifications and performance scaling decisions.
+
+---
+
+## Live Telemetry Metrics
+
+The console exposes a dedicated metrics bar to monitor the state of the websocket transport:
+* **Transport State**: Live connection health status (`connected`, `connecting`, `disconnected`).
+* **Expected Sequence / Last Committed**: The target next sequence number and the highest sequence parsed and committed to UI state.
+* **Buffer Size**: Queued out-of-order packets waiting for missing sequences.
+* **Duplicate Drops**: Counter tracking duplicate messages dropped by the client.
+* **Heartbeat Latency**: Round-trip time (RTT) calculated between receiving a `PING` from the server and sending a `PONG`.
+* **Event Throughput**: Active frequency of events processed per second.
+* **Reconnect Counts**: Total reconnection attempts performed.
+
+---
+
+## Getting Started
 
 ### 1. Prerequisites
-- **Node.js**: Ensure Node.js 20+ is installed.
-- **Docker**: For running the backend agent-server.
+Ensure you have the following installed on your machine:
+* Node.js (v20 or newer)
+* Docker (for the agent backend server)
 
-### 2. Start the Mock Backend Server
-Navigate to the `agent-server` directory, build, and start the container:
+### 2. Start the Backend Server
+Navigate to the server directory, build the docker image, and run it:
 
 **Normal Mode:**
 ```bash
@@ -67,48 +106,50 @@ docker build -t agent-server .
 docker run -p 4747:4747 agent-server
 ```
 
-**Chaos Mode:**
+**Chaos Mode (Simulates network drops and out-of-order packet delivery):**
 ```bash
 docker run -p 4747:4747 agent-server --mode chaos
 ```
 
-### 3. Start the Next.js Frontend Console
-Navigate to the `agent-console` directory, install dependencies, and start the development server:
-
+### 3. Start the Next.js Frontend
+Navigate to the console directory, install the required packages, and launch the development server:
 ```bash
 cd agent-console
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your web browser.
+Open your browser and navigate to `http://localhost:3000`.
 
 ---
 
-## Running the Automated Test Suite
+## Running Automated Integration Tests
 
-1. Open the application in your browser.
-2. Click the floating **Auto Test Runner** button in the bottom right corner of the screen.
-3. Click **START SUITE**.
-4. The test suite will automatically:
-   - Reset the session
-   - Send greeting messages
-   - Simulate and verify tool calls
-   - Load a large database schema
-   - Disconnect and reconnect to verify buffer recovery
+Click the **RUN INTEGRATION SUITE** button in the console header to execute the integration runner. It sequences through exactly 7 script cases:
+
+1. **Simple Greeting** (`hello`, `hi`, `hey`): Basic token streaming validation.
+2. **Report Summary** (`report`, `summary`, `q3`): Executes one mid-stream tool call.
+3. **Multi-Tool Analysis** (`analyze`, `compare`): Executes two sequential tool calls.
+4. **Knowledge Base Lookup** (`lookup`, `find`, `search`): Runs a tool call before any token streams begin.
+5. **Large Context** (`schema`, `database`, `large`): Validates processing of deep >500KB state schemas.
+6. **Long Response** (`long`, `detailed`, `document`): Verifies high-throughput long token streams.
+7. **Default** (`help`): Verifies a moderate response containing one tool call.
+
+### Controls:
+* **ABORT**: Immediately halts the websocket connection, freezes the streaming UI, and marks the active step with a red `✗`.
+* **START SUITE**: Resets the current console session (clears screen blocks, timeline history, and sequence counters), establishes a new websocket connection, and restarts the tests.
 
 ---
 
-## Visual Walkthrough & Screenshots
+## Running Unit Tests
+To run unit and benchmark tests using Vitest:
+```bash
+cd agent-console
+npm run test
+```
 
-Below are illustrations and layouts of the observer console running in normal and chaos mode:
+---
 
-### A. Streamed Response with Tool Call
-The streaming panel maintains frozen blocks while tool execution is active, showing immediate feedback:
-![Streamed Response and Tool Card](file:///C:/Users/ezboi/.gemini/antigravity-ide/brain/e07f5130-488c-4afe-97f7-9b8c392e235b/media__1781365066960.png)
+## Session Recording
 
-### B. Trace Timeline
-The timeline lists sequence numbers `#N` with specific badges. Consecutive `TOKEN` events are grouped under a single accordion indicating token counts and elapsed time.
-
-### C. Context Inspector
-The inspector visualizes active snapshots with hierarchical colors highlighting added properties in green, modified in orange, and deleted keys in red.
+A session recording demonstrating the console's user interface, stream visualization, tool execution cards, trace timeline, context diffing inspector, and recovery under simulated network drops is provided as part of the submission package.

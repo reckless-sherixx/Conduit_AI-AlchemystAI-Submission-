@@ -40,8 +40,8 @@
     "semantic_hash": "1f18c622dbb0e8e5db0dea4be96df61f"
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\README.md": {
-    "mtime": 1781366841.7019746,
-    "ast_hash": "6a79c24e9ee151f321853454e029a8e2",
+    "mtime": 1781374963.568702,
+    "ast_hash": "1668049771055d7067602aec4b127373",
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-server\\README.md": {
@@ -90,13 +90,13 @@
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\components\\ChatPanel.tsx": {
-    "mtime": 1781373182.7507906,
-    "ast_hash": "b7367bb0734c129f931c3aeeeecd56b1",
+    "mtime": 1781374678.8149123,
+    "ast_hash": "ccd3eb91289577a0d32dd77ee705a9c4",
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\components\\ConsoleApp.tsx": {
-    "mtime": 1781374087.9597142,
-    "ast_hash": "7cef006ec8d6810a752c71b1f93c4e7a",
+    "mtime": 1781374410.481554,
+    "ast_hash": "8de6a1573ff40a115e98e07f62b10f33",
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\components\\ContextInspector.tsx": {
