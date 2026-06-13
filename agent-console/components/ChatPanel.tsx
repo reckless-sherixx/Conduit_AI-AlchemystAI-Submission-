@@ -26,7 +26,7 @@ export function ChatPanel({ blocks }: ChatPanelProps) {
             Send a message to start the agent. Type a keyword like <strong>hello</strong>, <strong>summary</strong>, or <strong>analyze</strong> to trigger a response.
           </p>
           <div className="flex flex-wrap gap-2 justify-center mt-2">
-            {['hello', 'summary', 'analyze'].map(kw => (
+            {['hello', 'summary', 'analyze', 'find', 'large', 'long', 'help'].map(kw => (
               <span key={kw} className="nb-badge bg-white cursor-default">{kw}</span>
             ))}
           </div>
@@ -39,7 +39,7 @@ export function ChatPanel({ blocks }: ChatPanelProps) {
     <div className="flex flex-col h-full overflow-y-auto px-4 py-3 gap-3">
       {blocks.map((block) => {
 
-        
+
         if (block.type === 'user') {
           return (
             <div key={block.id} className="nb-card bg-[var(--color-secondary-bg)] p-3 max-w-[85%]">
@@ -50,12 +50,12 @@ export function ChatPanel({ blocks }: ChatPanelProps) {
           );
         }
 
-        
+
         if (block.type === 'text') {
           return (
             <div key={block.id} className="max-w-[95%]">
               <div className="border-2 border-black overflow-hidden" style={{ boxShadow: 'var(--shadow-flat-sm)' }}>
-                {}
+                { }
                 <div className="bg-[var(--color-accent-green)] px-3 py-1 border-b-2 border-black flex items-center justify-between">
                   <span className="nb-mono text-[0.6rem] font-bold uppercase">Agent Response</span>
                   {block.isStreaming && (
@@ -73,7 +73,7 @@ export function ChatPanel({ blocks }: ChatPanelProps) {
           );
         }
 
-        
+
         if (block.type === 'tool_call') {
           const isDone = block.status === 'completed';
           const headerBg = isDone ? 'bg-[var(--color-accent-green)]' : 'bg-[var(--color-accent-amber)]';
@@ -83,7 +83,7 @@ export function ChatPanel({ blocks }: ChatPanelProps) {
           return (
             <div key={block.id} className="max-w-[95%]" data-call-id={block.call_id}>
               <div className="border-2 border-black overflow-hidden" style={{ boxShadow: 'var(--shadow-flat-sm)' }}>
-                {}
+                { }
                 <div className={`${headerBg} px-3 py-1.5 border-b-2 border-black flex items-center justify-between`}>
                   <div className="flex items-center gap-2">
                     <span className="nb-badge bg-[var(--color-accent-purple)] text-white text-[0.55rem] py-0">
@@ -96,7 +96,7 @@ export function ChatPanel({ blocks }: ChatPanelProps) {
                   </span>
                 </div>
 
-                {}
+                { }
                 <div className="bg-white px-3 py-2 border-b border-black/10">
                   <p className="nb-label text-[0.55rem] mb-1">ARGS</p>
                   <pre className="nb-mono text-[0.65rem] leading-relaxed text-[var(--color-secondary-text)] whitespace-pre-wrap break-all">
@@ -104,7 +104,7 @@ export function ChatPanel({ blocks }: ChatPanelProps) {
                   </pre>
                 </div>
 
-                {}
+                { }
                 {isDone && block.result !== undefined && (
                   <div className="bg-[var(--color-accent-green)]/10 px-3 py-2 border-t-2 border-black">
                     <p className="nb-label text-[0.55rem] mb-1">RESULT</p>

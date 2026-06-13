@@ -47,6 +47,7 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
 
   const wsRef = useRef<WebSocket | null>(null);
   const onMessageRef = useRef(onMessage);
+
   useEffect(() => {
     onMessageRef.current = onMessage;
   }, [onMessage]);
@@ -58,10 +59,8 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
   const reconnectAttemptRef = useRef<number>(0);
   const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cleanedUpRef = useRef(false);
-  const connectRef = useRef<(() => void) | null>(null);
   const manualDisconnectRef = useRef(false);
 
-  
   const duplicateDropsRef = useRef(0);
   const eventCountRef = useRef(0);
   const throughputIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -104,6 +103,96 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
     setMetrics(prev => ({ ...prev, bufferSize: bufferRef.current.length }));
   }, []);
 
+  const connect = useCallback(() => {
+    if (cleanedUpRef.current || manualDisconnectRef.current || wsRef.current) return;
+
+    setStatus('connecting');
+    const ws = new WebSocket(url);
+    wsRef.current = ws;
+
+    ws.onopen = () => {
+      if (cleanedUpRef.current) {
+        ws.close();
+        return;
+      }
+      setStatus('connected');
+      reconnectAttemptRef.current = 0;
+      setReconnectAttempt(0);
+      setBackoffMs(0);
+
+      if (lastRenderedSeqRef.current > 0) {
+        ws.send(JSON.stringify({ type: 'RESUME', last_seq: lastRenderedSeqRef.current }));
+        setMetrics(prev => ({ ...prev, replayCount: prev.replayCount + 1 }));
+      }
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const msg = JSON.parse(event.data) as ServerMessage;
+
+        if (msg.type === 'PING') {
+          const pingTime = Date.now();
+          ws.send(JSON.stringify({ type: 'PONG', echo: msg.challenge || '' }));
+          setLastPingAt(pingTime);
+          const latency = Date.now() - pingTime;
+          setMetrics(prev => ({ ...prev, heartbeatLatencyMs: latency }));
+        }
+
+        if (msg.seq < expectedSeqRef.current) {
+          duplicateDropsRef.current += 1;
+          setMetrics(prev => ({ ...prev, duplicateDrops: duplicateDropsRef.current }));
+          return;
+        }
+
+        if (msg.seq === expectedSeqRef.current) {
+          onMessageRef.current(msg);
+          expectedSeqRef.current += 1;
+          setCurrentSeq(expectedSeqRef.current - 1);
+          eventCountRef.current += 1;
+          processBuffer();
+        } else {
+          if (!bufferRef.current.some(m => m.seq === msg.seq)) {
+            bufferRef.current.push(msg);
+            setMetrics(prev => ({ ...prev, bufferSize: bufferRef.current.length }));
+          } else {
+            duplicateDropsRef.current += 1;
+            setMetrics(prev => ({ ...prev, duplicateDrops: duplicateDropsRef.current }));
+          }
+        }
+      } catch (err) {
+        console.error('Failed to parse WS message', err);
+      }
+    };
+
+    ws.onclose = (event) => {
+      if (ws !== wsRef.current) return;
+      wsRef.current = null;
+      if (cleanedUpRef.current || manualDisconnectRef.current) return;
+
+      if (event?.reason === 'replaced') {
+        setStatus('disconnected');
+        console.warn("[WebSocket] Connection closed because it was replaced by a new session.");
+        return;
+      }
+
+      setStatus('disconnected');
+      reconnectCountRef.current += 1;
+      setMetrics(prev => ({
+        ...prev,
+        reconnectCount: reconnectCountRef.current,
+      }));
+      const attempt = reconnectAttemptRef.current;
+      const bo = Math.min(500 * Math.pow(2, attempt), 10000);
+      reconnectAttemptRef.current += 1;
+      setReconnectAttempt(reconnectAttemptRef.current);
+      setBackoffMs(bo);
+
+      reconnectTimeoutRef.current = setTimeout(connect, bo);
+    };
+
+    ws.onerror = () => {};
+  }, [url, processBuffer]);
+
   const disconnect = useCallback(() => {
     manualDisconnectRef.current = true;
     if (reconnectTimeoutRef.current) {
@@ -141,8 +230,8 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
     });
     
     manualDisconnectRef.current = false;
-    setTimeout(() => connectRef.current?.(), 200);
-  }, [disconnect]);
+    setTimeout(() => connect(), 200);
+  }, [disconnect, connect]);
 
   const forceReconnect = useCallback(() => {
     manualDisconnectRef.current = false;
@@ -157,8 +246,8 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
     reconnectAttemptRef.current = 0;
     setReconnectAttempt(0);
 
-    setTimeout(() => connectRef.current?.(), 100);
-  }, []);
+    setTimeout(() => connect(), 100);
+  }, [connect]);
 
   const triggerNetworkDrop = useCallback(() => {
     if (wsRef.current) {
@@ -170,7 +259,6 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
     cleanedUpRef.current = false;
     manualDisconnectRef.current = false;
 
-    
     throughputIntervalRef.current = setInterval(() => {
       setMetrics(prev => ({
         ...prev,
@@ -181,98 +269,6 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
       eventCountRef.current = 0;
     }, 1000);
 
-    function connect() {
-      if (cleanedUpRef.current) return;
-      if (manualDisconnectRef.current) return;
-      if (wsRef.current) return;
-
-      setStatus('connecting');
-      const ws = new WebSocket(url);
-      wsRef.current = ws;
-
-      ws.onopen = () => {
-        if (cleanedUpRef.current) { ws.close(); return; }
-        setStatus('connected');
-        reconnectAttemptRef.current = 0;
-        setReconnectAttempt(0);
-        setBackoffMs(0);
-
-        if (lastRenderedSeqRef.current > 0) {
-          ws.send(JSON.stringify({ type: 'RESUME', last_seq: lastRenderedSeqRef.current }));
-          setMetrics(prev => ({ ...prev, replayCount: prev.replayCount + 1 }));
-        }
-      };
-
-      ws.onmessage = (event) => {
-        try {
-          const msg = JSON.parse(event.data) as ServerMessage;
-
-          
-          if (msg.type === 'PING') {
-            const pingTime = Date.now();
-            ws.send(JSON.stringify({ type: 'PONG', echo: msg.challenge || '' }));
-            setLastPingAt(pingTime);
-            const latency = Date.now() - pingTime;
-            setMetrics(prev => ({ ...prev, heartbeatLatencyMs: latency }));
-          }
-
-          
-          if (msg.seq < expectedSeqRef.current) {
-            duplicateDropsRef.current += 1;
-            return;
-          }
-
-          
-          if (msg.seq === expectedSeqRef.current) {
-            onMessageRef.current(msg);
-            expectedSeqRef.current += 1;
-            setCurrentSeq(expectedSeqRef.current - 1);
-            eventCountRef.current += 1;
-            processBuffer();
-          } else {
-            
-            if (!bufferRef.current.some(m => m.seq === msg.seq)) {
-              bufferRef.current.push(msg);
-              setMetrics(prev => ({ ...prev, bufferSize: bufferRef.current.length }));
-            } else {
-              duplicateDropsRef.current += 1;
-            }
-          }
-        } catch (err) {
-          console.error('Failed to parse WS message', err);
-        }
-      };
-
-      ws.onclose = (event) => {
-        if (ws !== wsRef.current) return;
-        wsRef.current = null;
-        if (cleanedUpRef.current || manualDisconnectRef.current) return;
-
-        if (event?.reason === 'replaced') {
-          setStatus('disconnected');
-          console.warn("[WebSocket] Connection closed because it was replaced by a new session.");
-          return;
-        }
-
-        setStatus('disconnected');
-        reconnectCountRef.current += 1;
-        setMetrics(prev => ({
-          ...prev,
-          reconnectCount: reconnectCountRef.current,
-        }));
-        const attempt = reconnectAttemptRef.current;
-        const bo = Math.min(500 * Math.pow(2, attempt), 10000);
-        reconnectAttemptRef.current += 1;
-        setReconnectAttempt(reconnectAttemptRef.current);
-        setBackoffMs(bo);
-
-        reconnectTimeoutRef.current = setTimeout(connect, bo);
-      };
-
-      ws.onerror = () => {};
-    }
-
-    connectRef.current = connect;
     connect();
 
     return () => {
@@ -290,7 +286,7 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
         wsRef.current = null;
       }
     };
-  }, [url, processBuffer]);
+  }, [connect]);
 
   return { status, sendMessage, markRendered, currentSeq, reconnectAttempt, backoffMs, lastPingAt, forceReconnect, disconnect, resetSession, triggerNetworkDrop, metrics };
 }

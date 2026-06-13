@@ -234,9 +234,6 @@ export function ConsoleApp() {
       <AutoTestRunner
         status={status}
         onSend={handleSend}
-        onDisconnect={triggerNetworkDrop}
-        onReconnect={forceReconnect}
-        onReset={handleResetSession}
         currentSeq={currentSeq}
         isStreaming={isStreaming}
         runTrigger={suiteRunTrigger}

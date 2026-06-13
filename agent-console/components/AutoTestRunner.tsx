@@ -5,9 +5,6 @@ import React, { useState, useEffect, useRef } from 'react';
 interface AutoTestRunnerProps {
   status: 'connected' | 'connecting' | 'disconnected';
   onSend: (content: string) => void;
-  onDisconnect: () => void;
-  onReconnect: () => void;
-  onReset: () => void;
   currentSeq: number;
   isStreaming: boolean;
   runTrigger?: number;
@@ -20,7 +17,7 @@ interface TestStep {
   waitCondition: (seq: number, isStreaming: boolean) => boolean;
 }
 
-export function AutoTestRunner({ status, onSend, onDisconnect, onReconnect, onReset, currentSeq, isStreaming, runTrigger }: AutoTestRunnerProps) {
+export function AutoTestRunner({ status, onSend, currentSeq, isStreaming, runTrigger }: AutoTestRunnerProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
   const [activeStepIdx, setActiveStepIdx] = useState(-1);
@@ -30,16 +27,7 @@ export function AutoTestRunner({ status, onSend, onDisconnect, onReconnect, onRe
   
   const steps: TestStep[] = React.useMemo(() => [
     {
-      label: '1. Reset Session',
-      action: () => {
-        onReset();
-        addLog('Session reset. Waiting for connection...');
-      },
-      status: 'idle',
-      waitCondition: () => status === 'connected',
-    },
-    {
-      label: '2. Basic Greeting',
+      label: '1. Simple Greeting',
       action: () => {
         onSend('hello');
         addLog('Sent "hello" trigger.');
@@ -48,43 +36,60 @@ export function AutoTestRunner({ status, onSend, onDisconnect, onReconnect, onRe
       waitCondition: (seq: number, streaming: boolean) => !streaming && seq >= 15,
     },
     {
-      label: '3. Test Tool Calls',
+      label: '2. Report Summary',
       action: () => {
         onSend('summary');
-        addLog('Sent "summary" trigger to invoke tools.');
+        addLog('Sent "summary" trigger.');
       },
       status: 'idle',
       waitCondition: (seq: number, streaming: boolean) => !streaming && seq >= 22,
     },
     {
-      label: '4. Multi-Tool Analysis',
+      label: '3. Multi-Tool Analysis',
       action: () => {
         onSend('analyze');
-        addLog('Sent "analyze" trigger for multi-tool correlation.');
+        addLog('Sent "analyze" trigger.');
       },
       status: 'idle',
       waitCondition: (seq: number, streaming: boolean) => !streaming && seq >= 30,
     },
     {
-      label: '5. Large Context DB Schema',
+      label: '4. Knowledge Base Lookup',
+      action: () => {
+        onSend('find');
+        addLog('Sent "find" trigger.');
+      },
+      status: 'idle',
+      waitCondition: (seq: number, streaming: boolean) => !streaming && seq >= 18,
+    },
+    {
+      label: '5. Large Context',
       action: () => {
         onSend('schema');
-        addLog('Sent "schema" trigger for large context load.');
+        addLog('Sent "schema" trigger.');
       },
       status: 'idle',
       waitCondition: (seq: number, streaming: boolean) => !streaming && seq >= 25,
     },
     {
-      label: '6. Connection Drop Simulation',
+      label: '6. Long Response',
       action: () => {
-        onDisconnect();
-        addLog('Simulated network drop. Waiting for reconnect...');
-        setTimeout(() => onReconnect(), 2000);
+        onSend('long');
+        addLog('Sent "long" trigger.');
       },
       status: 'idle',
-      waitCondition: () => status === 'connected',
+      waitCondition: (seq: number, streaming: boolean) => !streaming && seq >= 60,
+    },
+    {
+      label: '7. Default',
+      action: () => {
+        onSend('help');
+        addLog('Sent "help" trigger.');
+      },
+      status: 'idle',
+      waitCondition: (seq: number, streaming: boolean) => !streaming && seq >= 20,
     }
-  ], [onReset, onSend, onDisconnect, onReconnect, status]);
+  ], [onSend]);
 
   const [stepStatuses, setStepStatuses] = useState<TestStep['status'][]>(steps.map(() => 'idle'));
 
