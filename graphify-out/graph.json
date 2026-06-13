@@ -1038,7 +1038,7 @@
       "source_file": "agent-console/hooks/useWebSocket.ts",
       "source_location": "L1",
       "id": "agent_console_hooks_usewebsocket_ts",
-      "community": 6,
+      "community": 29,
       "norm_label": "usewebsocket.ts"
     },
     {
@@ -1047,7 +1047,7 @@
       "source_file": "agent-console/hooks/useWebSocket.ts",
       "source_location": "L4",
       "id": "hooks_usewebsocket_usewebsocketoptions",
-      "community": 6,
+      "community": 29,
       "norm_label": "usewebsocketoptions"
     },
     {
@@ -1056,7 +1056,7 @@
       "source_file": "agent-console/hooks/useWebSocket.ts",
       "source_location": "L9",
       "id": "hooks_usewebsocket_wsmetrics",
-      "community": 6,
+      "community": 29,
       "norm_label": "wsmetrics"
     },
     {
@@ -1065,7 +1065,7 @@
       "source_file": "agent-console/hooks/useWebSocket.ts",
       "source_location": "L18",
       "id": "hooks_usewebsocket_websocketstate",
-      "community": 6,
+      "community": 29,
       "norm_label": "websocketstate"
     },
     {
@@ -1362,7 +1362,7 @@
       "source_file": "agent-console/types/protocol.ts",
       "source_location": "L51",
       "id": "types_protocol_servermessage",
-      "community": 6,
+      "community": 29,
       "norm_label": "servermessage"
     },
     {
@@ -1407,7 +1407,7 @@
       "source_file": "agent-console/types/protocol.ts",
       "source_location": "L80",
       "id": "types_protocol_clientmessage",
-      "community": 6,
+      "community": 29,
       "norm_label": "clientmessage"
     },
     {
@@ -8869,5 +8869,5 @@
       "source_file": "README.md"
     }
   ],
-  "built_at_commit": "da45818fa9e523ec9a8e4925b88ae598df6a7a11"
+  "built_at_commit": "e8a81d5f2313f520c87520cf093d088704f54ae6"
 }

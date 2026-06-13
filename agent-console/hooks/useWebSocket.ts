@@ -99,7 +99,7 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
         processed = true;
       }
     } while (processed);
-    
+
     setMetrics(prev => ({ ...prev, bufferSize: bufferRef.current.length }));
   }, []);
 
@@ -190,7 +190,7 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
       reconnectTimeoutRef.current = setTimeout(connect, bo);
     };
 
-    ws.onerror = () => {};
+    ws.onerror = () => { };
   }, [url, processBuffer]);
 
   const disconnect = useCallback(() => {
@@ -208,7 +208,7 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
 
   const resetSession = useCallback(() => {
     disconnect();
-    
+
     expectedSeqRef.current = 1;
     bufferRef.current = [];
     lastRenderedSeqRef.current = 0;
@@ -228,7 +228,7 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
       eventThroughput: 0,
       replayCount: 0,
     });
-    
+
     manualDisconnectRef.current = false;
     setTimeout(() => connect(), 200);
   }, [disconnect, connect]);

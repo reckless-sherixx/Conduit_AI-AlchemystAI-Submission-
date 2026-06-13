@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  
+
   --color-bg-canvas: #e8e0d4;
   --color-bg-card: #ffffff;
   --color-fg: #1e1e1e;
   --color-border: #000000;
   --color-secondary-bg: #f5f0ea;
 
-  
+
   --color-main: #5eead4;
   --color-main-foreground: #0f172a;
 
-  
+
   --color-accent-green: #4ade80;
   --color-accent-red: #f87171;
   --color-accent-amber: #fde047;
@@ -21,28 +21,33 @@
   --color-accent-orange: #ffa94d;
   --color-accent-teal: #5eead4;
 
-  
+
   --color-muted-text: #71717a;
   --color-secondary-text: #27272a;
 
-  
+
   --shadow-flat: 4px 4px 0px 0px #000000;
   --shadow-flat-sm: 2px 2px 0px 0px #000000;
   --shadow-flat-lg: 6px 6px 0px 0px #000000;
 
-  
+
   --font-mono: 'JetBrains Mono', monospace;
   --font-heading: 'Outfit', sans-serif;
   --font-sans: 'DM Sans', system-ui, sans-serif;
 }
 
 @layer base {
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
-  html, body {
+
+  html,
+  body {
     height: 100%;
     overflow: hidden;
     background-color: var(--color-bg-canvas);
@@ -57,14 +62,17 @@
     width: 6px;
     height: 6px;
   }
+
   ::-webkit-scrollbar-track {
     background: transparent;
   }
+
   ::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.15);
     border-radius: 0;
     border: 1px solid #000;
   }
+
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 0, 0, 0.3);
   }
@@ -185,9 +193,17 @@
 }
 
 
-.nb-status-connected { background: var(--color-accent-green); }
-.nb-status-connecting { background: var(--color-accent-blue); }
-.nb-status-disconnected { background: var(--color-accent-red); }
+.nb-status-connected {
+  background: var(--color-accent-green);
+}
+
+.nb-status-connecting {
+  background: var(--color-accent-blue);
+}
+
+.nb-status-disconnected {
+  background: var(--color-accent-red);
+}
 
 
 .nb-metric {
@@ -219,17 +235,33 @@
 
 
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
 }
 
 @keyframes slide-up {
-  from { transform: translateY(10px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes spin-slow {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .animate-pulse-dot {

@@ -8,6 +8,9 @@ interface AutoTestRunnerProps {
   currentSeq: number;
   isStreaming: boolean;
   runTrigger?: number;
+  onAbort?: () => void;
+  onReconnect?: () => void;
+  onReset?: () => void;
 }
 
 interface TestStep {
@@ -17,11 +20,12 @@ interface TestStep {
   waitCondition: (seq: number, isStreaming: boolean) => boolean;
 }
 
-export function AutoTestRunner({ status, onSend, currentSeq, isStreaming, runTrigger }: AutoTestRunnerProps) {
+export function AutoTestRunner({ status, onSend, currentSeq, isStreaming, runTrigger, onAbort, onReconnect, onReset }: AutoTestRunnerProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
   const [activeStepIdx, setActiveStepIdx] = useState(-1);
   const [logs, setLogs] = useState<string[]>([]);
+  const [isWaitingForConnection, setIsWaitingForConnection] = useState(false);
   const logsEndRef = useRef<HTMLDivElement>(null);
 
   
@@ -104,22 +108,40 @@ export function AutoTestRunner({ status, onSend, currentSeq, isStreaming, runTri
   };
 
   const startSuite = () => {
-    if (status !== 'connected') {
-      addLog('Cannot start: Transport disconnected.');
-      return;
-    }
     setIsRunning(true);
     setIsExpanded(true);
-    setActiveStepIdx(0);
     setStepStatuses(steps.map(() => 'idle'));
     setLogs([]);
     addLog('Starting Automated Test Suite...');
+
+    onReset?.();
+    setIsWaitingForConnection(true);
+    setActiveStepIdx(-1);
+    addLog('Resetting session. Waiting for connection...');
   };
+
+  useEffect(() => {
+    if (isRunning && isWaitingForConnection && status === 'connected') {
+      setIsWaitingForConnection(false);
+      setActiveStepIdx(0);
+      addLog('Transport connected. Starting steps...');
+    }
+  }, [isRunning, isWaitingForConnection, status]);
 
   const abortSuite = () => {
     setIsRunning(false);
+    if (activeStepIdx >= 0) {
+      setStepStatuses(prev => {
+        const next = [...prev];
+        if (next[activeStepIdx] === 'running') {
+          next[activeStepIdx] = 'failed';
+        }
+        return next;
+      });
+    }
     setActiveStepIdx(-1);
     addLog('Test suite aborted by user.');
+    onAbort?.();
   };
 
   useEffect(() => {
@@ -211,11 +233,14 @@ export function AutoTestRunner({ status, onSend, currentSeq, isStreaming, runTri
             const st = stepStatuses[idx];
             return (
               <div key={idx} className="flex items-center gap-3">
-                <div className={`w-4 h-4 border-2 border-black shrink-0 flex items-center justify-center ${st === 'success' ? 'bg-[var(--color-accent-green)] text-xs font-bold' :
-                    st === 'running' ? 'bg-[var(--color-accent-amber)] animate-spin-slow border-t-transparent rounded-full' :
-                      'bg-gray-200'
-                  }`}>
+                <div className={`w-4 h-4 border-2 border-black shrink-0 flex items-center justify-center ${
+                  st === 'success' ? 'bg-[var(--color-accent-green)] text-xs font-bold' :
+                  st === 'running' ? 'bg-[var(--color-accent-amber)] animate-spin-slow border-t-transparent rounded-full' :
+                  st === 'failed' ? 'bg-[var(--color-accent-red)] text-white text-xs font-bold' :
+                  'bg-gray-200'
+                }`}>
                   {st === 'success' && '✓'}
+                  {st === 'failed' && '✗'}
                 </div>
                 <span className={`nb-mono text-[0.75rem] ${st === 'running' ? 'font-bold text-black' : 'text-[var(--color-secondary-text)]'}`}>
                   {step.label}

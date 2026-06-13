@@ -90,13 +90,13 @@
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\components\\ChatPanel.tsx": {
-    "mtime": 1781368964.6919794,
-    "ast_hash": "684e47f674360d713e1df31d6f4efc86",
+    "mtime": 1781373182.7507906,
+    "ast_hash": "b7367bb0734c129f931c3aeeeecd56b1",
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\components\\ConsoleApp.tsx": {
-    "mtime": 1781371470.5432725,
-    "ast_hash": "79f39de084ca35d55f4eaac4730ab637",
+    "mtime": 1781374087.9597142,
+    "ast_hash": "7cef006ec8d6810a752c71b1f93c4e7a",
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\components\\ContextInspector.tsx": {
@@ -115,8 +115,8 @@
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\hooks\\useWebSocket.ts": {
-    "mtime": 1781371690.3685813,
-    "ast_hash": "bf5f261cbd662179c072acbc8d01312c",
+    "mtime": 1781373400.9613419,
+    "ast_hash": "13bb8ff40fd151577c0f7bd2e2824dbf",
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\types\\protocol.ts": {
@@ -180,12 +180,12 @@
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\agent-console\\components\\AutoTestRunner.tsx": {
-    "mtime": 1781372310.0334475,
-    "ast_hash": "e607bda993828735574a33be7975f582",
+    "mtime": 1781374080.0240529,
+    "ast_hash": "1011da0fe583ec8f7c3aeb1d8a515231",
     "semantic_hash": ""
   },
   "C:\\Users\\ezboi\\Documents\\Cohort_3.0\\Conduit\\DECISIONS.md": {
-    "mtime": 1781366831.525623,
+    "mtime": 1781373511.8816764,
     "ast_hash": "e3ee490e3ce52cf9ba51c267d762ddf3",
     "semantic_hash": ""
   },

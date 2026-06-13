@@ -26,7 +26,7 @@ export function ConsoleApp() {
     }
   });
 
-  
+
   useEffect(() => {
     targetSeqRef.current = currentSeq;
   }, [currentSeq]);
@@ -41,7 +41,7 @@ export function ConsoleApp() {
     return () => clearInterval(interval);
   }, []);
 
-  
+
   useEffect(() => {
     if (timeline.length > 0) {
       const lastEvt = timeline[timeline.length - 1];
@@ -68,31 +68,7 @@ export function ConsoleApp() {
 
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden p-4 gap-3" style={{ fontFamily: 'var(--font-mono)' }}>
-
-      {}
-      <div className="nb-card flex items-center justify-between px-5 py-3 shrink-0">
-        <div className="flex flex-col gap-0.5">
-          <h1 className="nb-title text-xl tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
-            CONDUIT AI OBSERVABILITY NODE
-          </h1>
-          <div className="flex items-center gap-2 text-xs text-[var(--color-muted-text)]">
-            <span>Event-sourced agent console connection:</span>
-            <span className="nb-badge bg-[var(--color-main)] text-[var(--color-main-foreground)]">
-              ws:
-            </span>
-          </div>
-        </div>
-        <a
-          href="https://github.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="nb-btn nb-btn-primary text-xs"
-        >
-          GITHUB
-        </a>
-      </div>
-
-      {}
+      { }
       <div className="nb-card px-5 py-3 shrink-0">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
@@ -100,9 +76,9 @@ export function ConsoleApp() {
               className="w-3.5 h-3.5 rounded-full border-2 border-black animate-pulse-dot"
               style={{ backgroundColor: statusColor }}
             />
-            <span className="nb-title text-sm" style={{ fontFamily: 'var(--font-heading)' }}>
-              OBSERVABILITY NODE
-            </span>
+            <h1 className="nb-title text-xl tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+              CONDUIT AI
+            </h1>
           </div>
 
           <div className="flex items-center gap-2">
@@ -163,7 +139,7 @@ export function ConsoleApp() {
         </div>
       </div>
 
-      {}
+      { }
       {status !== 'connected' && (
         <div className="nb-card bg-[var(--color-accent-amber)] flex items-center gap-3 px-4 py-2 shrink-0">
           <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin-slow" />
@@ -173,9 +149,9 @@ export function ConsoleApp() {
         </div>
       )}
 
-      {}
+      { }
       <div className="flex flex-1 min-h-0 gap-3 overflow-hidden">
-        {}
+        { }
         <div className="nb-card flex flex-col w-[280px] shrink-0 overflow-hidden">
           <div className="px-3 py-2 border-b-2 border-black bg-[var(--color-secondary-bg)]">
             <h2 className="nb-title text-xs" style={{ fontFamily: 'var(--font-heading)' }}>TRACE TIMELINE</h2>
@@ -185,7 +161,7 @@ export function ConsoleApp() {
           </div>
         </div>
 
-        {}
+        { }
         <div className="nb-card flex flex-col flex-1 min-w-0 overflow-hidden">
           <div className="flex items-center justify-between px-4 py-2 border-b-2 border-black bg-[var(--color-secondary-bg)]">
             <h2 className="nb-title text-xs" style={{ fontFamily: 'var(--font-heading)' }}>STREAMING FEED</h2>
@@ -198,7 +174,7 @@ export function ConsoleApp() {
           <div className="flex-1 overflow-hidden min-h-0">
             <ChatPanel blocks={blocks} />
           </div>
-          {}
+          { }
           <div className="flex items-center gap-2 px-3 py-2 border-t-2 border-black bg-[var(--color-secondary-bg)]">
             <input
               type="text"
@@ -219,7 +195,7 @@ export function ConsoleApp() {
           </div>
         </div>
 
-        {}
+        { }
         <div className="nb-card flex flex-col w-[280px] shrink-0 overflow-hidden">
           <div className="px-3 py-2 border-b-2 border-black bg-[var(--color-secondary-bg)]">
             <h2 className="nb-title text-xs" style={{ fontFamily: 'var(--font-heading)' }}>CONTEXT STATE</h2>
@@ -230,13 +206,16 @@ export function ConsoleApp() {
         </div>
       </div>
 
-      {}
+      { }
       <AutoTestRunner
         status={status}
         onSend={handleSend}
         currentSeq={currentSeq}
         isStreaming={isStreaming}
         runTrigger={suiteRunTrigger}
+        onAbort={disconnect}
+        onReconnect={forceReconnect}
+        onReset={handleResetSession}
       />
     </div>
   );
