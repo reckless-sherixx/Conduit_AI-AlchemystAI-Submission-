@@ -66,6 +66,11 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
   const throughputIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const reconnectCountRef = useRef(0);
 
+  const isStreamingRef = useRef(false);
+  const lastMessageTimeRef = useRef(0);
+  const lastProgressSeqRef = useRef<number>(1);
+  const lastProgressTimeRef = useRef(0);
+
   const sendMessage = useCallback((msg: ClientMessage) => {
     if (wsRef.current?.readyState === WebSocket.OPEN) {
       if (msg.type === 'USER_MESSAGE') {
@@ -73,6 +78,10 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
         lastRenderedSeqRef.current = 0;
         bufferRef.current = [];
         setCurrentSeq(0);
+        isStreamingRef.current = true;
+        lastMessageTimeRef.current = Date.now();
+        lastProgressSeqRef.current = 1;
+        lastProgressTimeRef.current = Date.now();
       }
       wsRef.current.send(JSON.stringify(msg));
     }
@@ -119,6 +128,8 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
       reconnectAttemptRef.current = 0;
       setReconnectAttempt(0);
       setBackoffMs(0);
+      lastMessageTimeRef.current = Date.now();
+      lastProgressTimeRef.current = Date.now();
 
       if (lastRenderedSeqRef.current > 0) {
         ws.send(JSON.stringify({ type: 'RESUME', last_seq: lastRenderedSeqRef.current }));
@@ -129,6 +140,7 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
     ws.onmessage = (event) => {
       try {
         const msg = JSON.parse(event.data) as ServerMessage;
+        lastMessageTimeRef.current = Date.now();
 
         if (msg.type === 'PING') {
           const pingTime = Date.now();
@@ -138,13 +150,16 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
           setMetrics(prev => ({ ...prev, heartbeatLatencyMs: latency }));
         }
 
+        if (msg.type === 'TOKEN' || msg.type === 'TOOL_CALL' || msg.type === 'CONTEXT_SNAPSHOT') {
+          isStreamingRef.current = true;
+        }
+        if (msg.type === 'STREAM_END') {
+          isStreamingRef.current = false;
+        }
+
         if (msg.seq < expectedSeqRef.current) {
           duplicateDropsRef.current += 1;
           setMetrics(prev => ({ ...prev, duplicateDrops: duplicateDropsRef.current }));
-          return;
-        }
-
-        if (msg.seq >= expectedSeqRef.current + 8) {
           return;
         }
 
@@ -162,6 +177,11 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
             duplicateDropsRef.current += 1;
             setMetrics(prev => ({ ...prev, duplicateDrops: duplicateDropsRef.current }));
           }
+        }
+
+        if (expectedSeqRef.current !== lastProgressSeqRef.current) {
+          lastProgressSeqRef.current = expectedSeqRef.current;
+          lastProgressTimeRef.current = Date.now();
         }
       } catch (err) {
         console.error('Failed to parse WS message', err);
@@ -208,6 +228,7 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
       wsRef.current = null;
     }
     setStatus('disconnected');
+    isStreamingRef.current = false;
   }, []);
 
   const resetSession = useCallback(() => {
@@ -233,6 +254,7 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
       replayCount: 0,
     });
 
+    isStreamingRef.current = false;
     manualDisconnectRef.current = false;
     setTimeout(() => connect(), 200);
   }, [disconnect, connect]);
@@ -260,6 +282,9 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
   }, []);
 
   useEffect(() => {
+    lastMessageTimeRef.current = Date.now();
+    lastProgressTimeRef.current = Date.now();
+
     cleanedUpRef.current = false;
     manualDisconnectRef.current = false;
 
@@ -271,6 +296,32 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
         reconnectCount: reconnectCountRef.current,
       }));
       eventCountRef.current = 0;
+
+      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+        const now = Date.now();
+        const timeSinceLastMessage = now - lastMessageTimeRef.current;
+
+        // Case 1: We are streaming, but haven't heard anything for 9.5s
+        if (isStreamingRef.current && timeSinceLastMessage > 9500) {
+          console.warn(`[useWebSocket] Stream stall detected: no messages received for ${timeSinceLastMessage}ms. Forcing reconnect...`);
+          forceReconnect();
+          return;
+        }
+
+        // Case 2: Out-of-order buffer stall (we have a sequence hole for > 9.5s)
+        if (bufferRef.current.length > 0 && (now - lastProgressTimeRef.current) > 9500) {
+          console.warn(`[useWebSocket] Buffer stall detected: expected sequence ${expectedSeqRef.current} has not arrived for ${now - lastProgressTimeRef.current}ms. Forcing reconnect...`);
+          forceReconnect();
+          return;
+        }
+
+        // Case 3: Connection dead check (no heartbeats or messages for 25s)
+        if (timeSinceLastMessage > 25000) {
+          console.warn(`[useWebSocket] Connection dead detected: no messages received for ${timeSinceLastMessage}ms. Forcing reconnect...`);
+          forceReconnect();
+          return;
+        }
+      }
     }, 1000);
 
     connect();
@@ -290,7 +341,7 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
         wsRef.current = null;
       }
     };
-  }, [connect]);
+  }, [connect, forceReconnect]);
 
   return { status, sendMessage, markRendered, currentSeq, reconnectAttempt, backoffMs, lastPingAt, forceReconnect, disconnect, resetSession, triggerNetworkDrop, metrics };
 }

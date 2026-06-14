@@ -33,30 +33,40 @@ cd agent-console
 npm run test
 ```
 
-## Architecture at a Glance
 
-```
-WebSocket frames
-      │
-      ▼
-┌──────────────────┐
-│  useWebSocket    │  seq gating, reorder buffer, dedup,
-│  (protocol dam)  │  heartbeat PONG, RESUME on reconnect
-└────────┬─────────┘
-         │  ordered, deduplicated events only
-         ▼
-┌──────────────────┐
-│  useAgentState   │  blocks (text/tool_call), timeline
-│  (UI state)      │  batching, context snapshots
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────────────────────────────────┐
-│  ConsoleApp                                  │
-│  ┌────────┐  ┌──────────┐  ┌─────────────┐  │
-│  │Timeline│  │Chat Feed │  │Context Insp.│  │
-│  └────────┘  └──────────┘  └─────────────┘  │
-└──────────────────────────────────────────────┘
+## WebSocket Connection State Machine
+
+The client-side state machine handles connection drops, heartbeats, tool calls, streaming states, and recovery from transport stalls:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Disconnected
+    
+    Disconnected --> Connecting : Connect / Reset
+    
+    Connecting --> Connected_Idle : onopen
+    Connecting --> Reconnecting : onclose / onerror
+    
+    state Connected {
+        [*] --> Connected_Idle
+        
+        Connected_Idle --> Streaming : TOKEN / CONTEXT
+        Connected_Idle --> Connected_Idle : PING / PONG
+        
+        Streaming --> ToolCallPending : TOOL_CALL (Send ACK)
+        Streaming --> Connected_Idle : STREAM_END
+        Streaming --> Streaming : TOKEN
+        
+        ToolCallPending --> Streaming : TOOL_RESULT
+    }
+    
+    Connected --> Reconnecting : onclose / Stall (>9.5s)
+    
+    Reconnecting --> Resuming : Reconnect Success
+    Reconnecting --> Reconnecting : Backoff Retry
+    
+    Resuming --> Connected : RESUME / Replay
+    Resuming --> Reconnecting : onclose / onerror
 ```
 
 ## Chaos Mode Recording
