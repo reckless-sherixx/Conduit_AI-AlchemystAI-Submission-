@@ -27,8 +27,10 @@ export function AutoTestRunner({ status, onSend, currentSeq, isStreaming, runTri
   const [logs, setLogs] = useState<string[]>([]);
   const [isWaitingForConnection, setIsWaitingForConnection] = useState(false);
   const logsEndRef = useRef<HTMLDivElement>(null);
+  const lastExecutedIdxRef = useRef<number>(-1);
+  const prevStatusRef = useRef<string>(status);
 
-  
+
   const steps: TestStep[] = React.useMemo(() => [
     {
       label: '1. Simple Greeting',
@@ -97,7 +99,7 @@ export function AutoTestRunner({ status, onSend, currentSeq, isStreaming, runTri
 
   const [stepStatuses, setStepStatuses] = useState<TestStep['status'][]>(steps.map(() => 'idle'));
 
-  
+
   useEffect(() => {
     logsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [logs, isExpanded]);
@@ -117,6 +119,7 @@ export function AutoTestRunner({ status, onSend, currentSeq, isStreaming, runTri
     onReset?.();
     setIsWaitingForConnection(true);
     setActiveStepIdx(-1);
+    lastExecutedIdxRef.current = -1;
     addLog('Resetting session. Waiting for connection...');
   };
 
@@ -140,6 +143,7 @@ export function AutoTestRunner({ status, onSend, currentSeq, isStreaming, runTri
       });
     }
     setActiveStepIdx(-1);
+    lastExecutedIdxRef.current = -1;
     addLog('Test suite aborted by user.');
     onAbort?.();
   };
@@ -150,47 +154,58 @@ export function AutoTestRunner({ status, onSend, currentSeq, isStreaming, runTri
     }
   }, [runTrigger]);
 
-  
+  // Retry currently running step upon reconnection
+  useEffect(() => {
+    if (isRunning && status === 'connected' && prevStatusRef.current !== 'connected' && activeStepIdx >= 0) {
+      if (stepStatuses[activeStepIdx] === 'running') {
+        addLog(`Transport reconnected. Retrying step ${activeStepIdx + 1}...`);
+        lastExecutedIdxRef.current = -1;
+        setStepStatuses(prev => {
+          const next = [...prev];
+          next[activeStepIdx] = 'idle';
+          return next;
+        });
+      }
+    }
+    prevStatusRef.current = status;
+  }, [status, isRunning, activeStepIdx, stepStatuses]);
+
+  // Main step runner loop
   useEffect(() => {
     if (!isRunning || activeStepIdx < 0) return;
 
     if (activeStepIdx >= steps.length) {
       addLog('All tests completed successfully!');
-      setTimeout(() => {
-        setIsRunning(false);
-        setActiveStepIdx(-1);
-      }, 0);
+      setIsRunning(false);
+      setActiveStepIdx(-1);
+      lastExecutedIdxRef.current = -1;
       return;
     }
 
     const currentStep = steps[activeStepIdx];
 
-    
-    if (stepStatuses[activeStepIdx] === 'idle') {
-      setTimeout(() => {
-        setStepStatuses(prev => {
-          const next = [...prev];
-          next[activeStepIdx] = 'running';
-          return next;
-        });
-      }, 0);
+    if (stepStatuses[activeStepIdx] === 'idle' && lastExecutedIdxRef.current !== activeStepIdx) {
+      lastExecutedIdxRef.current = activeStepIdx;
+      setStepStatuses(prev => {
+        const next = [...prev];
+        next[activeStepIdx] = 'running';
+        return next;
+      });
       currentStep.action();
+      return;
     }
 
-    
     if (stepStatuses[activeStepIdx] === 'running') {
       if (currentStep.waitCondition(currentSeq, isStreaming)) {
-        setTimeout(() => {
-          setStepStatuses(prev => {
-            const next = [...prev];
-            next[activeStepIdx] = 'success';
-            return next;
-          });
-          setActiveStepIdx(idx => idx + 1); 
-        }, 0);
+        setStepStatuses(prev => {
+          const next = [...prev];
+          next[activeStepIdx] = 'success';
+          return next;
+        });
+        setActiveStepIdx(idx => idx + 1);
       }
     }
-  }, [isRunning, activeStepIdx, stepStatuses, currentSeq, isStreaming, status, steps]);
+  }, [isRunning, activeStepIdx, stepStatuses, currentSeq, isStreaming, steps]);
 
   if (!isExpanded) {
     return (
@@ -208,7 +223,7 @@ export function AutoTestRunner({ status, onSend, currentSeq, isStreaming, runTri
 
   return (
     <div className="fixed bottom-6 right-6 z-50 nb-card w-[380px] max-h-[500px] flex flex-col bg-white overflow-hidden animate-slide-up">
-      {}
+      { }
       <div className="px-4 py-3 border-b-2 border-black flex items-center justify-between bg-[var(--color-secondary-bg)]">
         <h3 className="nb-title text-sm">AUTO TEST SUITE</h3>
         <button
@@ -220,25 +235,24 @@ export function AutoTestRunner({ status, onSend, currentSeq, isStreaming, runTri
       </div>
 
       <div className="p-4 flex flex-col gap-4 overflow-y-auto">
-        {}
+        { }
         <div className={`p-2 border-2 border-black text-center ${isRunning ? 'bg-[var(--color-accent-teal)]' : 'bg-[var(--color-bg-canvas)]'}`}>
           <span className="nb-mono font-bold text-[0.75rem] uppercase">
             {isRunning ? `RUNNING STEP ${activeStepIdx + 1} OF ${steps.length}` : stepStatuses.every(s => s === 'success') ? 'ALL TESTS PASSED ✅' : 'READY TO RUN SUITE'}
           </span>
         </div>
 
-        {}
+        { }
         <div className="flex flex-col gap-2">
           {steps.map((step, idx) => {
             const st = stepStatuses[idx];
             return (
               <div key={idx} className="flex items-center gap-3">
-                <div className={`w-4 h-4 border-2 border-black shrink-0 flex items-center justify-center ${
-                  st === 'success' ? 'bg-[var(--color-accent-green)] text-xs font-bold' :
+                <div className={`w-4 h-4 border-2 border-black shrink-0 flex items-center justify-center ${st === 'success' ? 'bg-[var(--color-accent-green)] text-xs font-bold' :
                   st === 'running' ? 'bg-[var(--color-accent-amber)] animate-spin-slow border-t-transparent rounded-full' :
-                  st === 'failed' ? 'bg-[var(--color-accent-red)] text-white text-xs font-bold' :
-                  'bg-gray-200'
-                }`}>
+                    st === 'failed' ? 'bg-[var(--color-accent-red)] text-white text-xs font-bold' :
+                      'bg-gray-200'
+                  }`}>
                   {st === 'success' && '✓'}
                   {st === 'failed' && '✗'}
                 </div>
@@ -250,7 +264,7 @@ export function AutoTestRunner({ status, onSend, currentSeq, isStreaming, runTri
           })}
         </div>
 
-        {}
+        { }
         <div className="flex gap-2">
           {!isRunning ? (
             <button className="nb-btn nb-btn-primary flex-1 py-2 text-[0.8rem]" onClick={startSuite}>
@@ -263,7 +277,7 @@ export function AutoTestRunner({ status, onSend, currentSeq, isStreaming, runTri
           )}
         </div>
 
-        {}
+        { }
         <div className="flex flex-col border-2 border-black">
           <div className="bg-black text-white px-2 py-1 nb-mono text-[0.6rem] uppercase tracking-wider">
             Runner Logs

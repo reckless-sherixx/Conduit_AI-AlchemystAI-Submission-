@@ -39,6 +39,11 @@ export function useAgentState() {
     setIsStreaming(false);
   }, []);
 
+  const clearStreaming = useCallback(() => {
+    setIsStreaming(false);
+    setBlocks(prev => prev.map(b => (b.type === 'text' && b.isStreaming) ? { ...b, isStreaming: false } : b));
+  }, []);
+
   const handleMessage = useCallback((msg: ServerMessage) => {
     const now = Date.now();
 
@@ -127,5 +132,5 @@ export function useAgentState() {
     ));
   }, []);
 
-  return { blocks, timeline, snapshots, handleMessage, markToolAcked, addUserMessage, activeStreamId, isStreaming, resetState };
+  return { blocks, timeline, snapshots, handleMessage, markToolAcked, addUserMessage, activeStreamId, isStreaming, resetState, clearStreaming };
 }

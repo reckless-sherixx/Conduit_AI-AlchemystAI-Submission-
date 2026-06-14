@@ -144,6 +144,10 @@ export function useWebSocket({ url, onMessage }: UseWebSocketOptions): WebSocket
           return;
         }
 
+        if (msg.seq >= expectedSeqRef.current + 8) {
+          return;
+        }
+
         if (msg.seq === expectedSeqRef.current) {
           onMessageRef.current(msg);
           expectedSeqRef.current += 1;

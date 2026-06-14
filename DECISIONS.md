@@ -137,3 +137,21 @@ PING/PONG is handled at the raw WebSocket layer, before the reorder buffer. When
 - **Bidirectional scrolling**: Clicking a timeline event does not scroll the chat panel to the corresponding block, and vice versa. The data model supports it (blocks and timeline events share sequence numbers), but I didn't wire up the cross-component scroll refs. This would need a shared selection context and DOM ref forwarding.
 - **No virtualization on the chat panel**: For normal-length responses this is fine. For the 100x scenario or very long chaos sessions, the DOM would eventually get heavy. I'd add `react-window` for the block list.
 - **Diff engine runs synchronously on the main thread**: For 500KB snapshots it benchmarks at ~11ms, which is within a frame budget. But it's one GC spike away from janking. A worker-based approach would be more robust.
+
+---
+
+## 11. Known Test Suite Hangs and Step-Skipping in Chaos Mode
+
+Under severe chaos mode conditions (specifically with high-probability latency spikes and connection drops), the automated test suite runner can experience hangs or skip multiple test cases.
+
+### Root Causes
+
+1. **Sequence Number Leakage Across Steps**:
+   When a connection drops mid-stream, `isStreaming` becomes `false`. If the client's current sequence number is already above the next step's expected threshold (e.g. `seq = 25` from Step 3 when Step 4 expects `seq >= 18`), the wait condition is met immediately. Because the WebSocket is closed, the client's `sendMessage` cannot successfully transmit the trigger keyword to reset the sequence numbers. Consequently, the runner cascade-marks all subsequent steps with thresholds lower than 25 as successful in a single frame.
+
+2. **Heartbeat PING Discards (Stale Message Check Hang)**:
+   To filter out stale replayed messages from previous turns, the client enforces a stale check `msg.seq >= expectedSeqRef.current + 8`. However, when a latency spike delays token delivery, the expected sequence cursor pauses. If the server sends a heartbeat PING during this pause, the sequence gap can exceed 8, causing the client to discard the PING. This leaves a permanent gap in the sequence, and the client remains stuck forever waiting for the discarded sequence number.
+
+3. **Stale Replayed Packets from RESUME**:
+   Upon reconnection, the client automatically sends `RESUME(last_seq)`. Due to network RTT, the replayed events often arrive after the client has already triggered a retried step and reset its expected sequence to 1. These replayed events from the previous run enter the buffer and collide with the new stream's sequence numbers, causing sequence corruption and hangs.
+
