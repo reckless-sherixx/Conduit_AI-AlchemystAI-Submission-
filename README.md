@@ -4,6 +4,12 @@ A Next.js agent observability console that connects to a mock AI agent backend o
 
 The architecture separates protocol ingestion from rendering. A sequence-gated reorder buffer sits between the raw WebSocket and the React state layer, enforcing strict monotonic ordering before any event touches the DOM. This means the UI never sees out-of-order or duplicate data, even when the network is actively hostile.
 
+## Chaos Mode Recording
+
+Link to Loom : https://www.loom.com/share/bbc2634c974e4c3b93cf9b95e294ff50
+
+https://github.com/user-attachments/assets/cae5fd12-9833-499f-b6fb-a1608085478d
+
 ## Run It
 
 ### Prerequisites
@@ -36,44 +42,7 @@ npm run test
 
 ## WebSocket Connection State Machine
 
-The client-side state machine handles connection drops, heartbeats, tool calls, streaming states, and recovery from transport stalls:
-
-```mermaid
-stateDiagram-v2
-    [*] --> Disconnected
-    
-    Disconnected --> Connecting : Connect / Reset
-    
-    Connecting --> Connected_Idle : onopen
-    Connecting --> Reconnecting : onclose / onerror
-    
-    state Connected {
-        [*] --> Connected_Idle
-        
-        Connected_Idle --> Streaming : TOKEN / CONTEXT
-        Connected_Idle --> Connected_Idle : PING / PONG
-        
-        Streaming --> ToolCallPending : TOOL_CALL (Send ACK)
-        Streaming --> Connected_Idle : STREAM_END
-        Streaming --> Streaming : TOKEN
-        
-        ToolCallPending --> Streaming : TOOL_RESULT
-    }
-    
-    Connected --> Reconnecting : onclose / Stall (>9.5s)
-    
-    Reconnecting --> Resuming : Reconnect Success
-    Reconnecting --> Reconnecting : Backoff Retry
-    
-    Resuming --> Connected : RESUME / Replay
-    Resuming --> Reconnecting : onclose / onerror
-```
-
-## Chaos Mode Recording
-
-> **[Video will be added here]**
->
-> A 3-5 minute screen recording demonstrating: connection drop mid-stream with seamless recovery, out-of-order message reordering, rapid sequential tool calls, oversized 500KB+ context snapshot rendering, and corrupt heartbeat handling.
+<img width="683" height="454" alt="{F7C6E39A-ACDD-43EB-A3B9-A1C061597D56}" src="https://github.com/user-attachments/assets/291f4818-a284-4bf5-b2d3-01938cdb1d06" />
 
 ## What's Inside
 
